@@ -1,0 +1,51 @@
+#!/usr/bin/env bash
+# hooks/session-start — inject project conventions into session context
+# Reads conventions array from .claude/smart-dev.json (or plugin default profile).
+# Each entry is { "id": "...", "path": "...", "title": "..." } — file content is read and grouped.
+# Output: hookSpecificOutput JSON with additionalContext.
+
+set -euo pipefail
+
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+source "${SCRIPT_DIR}/lib/config.sh"
+
+COMMIT_FMT=$(get_config '.commitFormat' '')
+
+# Build enabled features list
+FEATURES=""
+FEATURES_OPENSPEC=$(get_config '.features.openspec' 'false')
+FEATURES_MSSQL=$(get_config '.features.mssql' 'false')
+[ "$FEATURES_OPENSPEC" = "true" ] && FEATURES="${FEATURES:+$FEATURES, }openspec"
+[ "$FEATURES_MSSQL" = "true" ] && FEATURES="${FEATURES:+$FEATURES, }mssql"
+
+# Read conventions array and build context from referenced files
+CONVENTIONS=""
+if [ -n "$CONFIG_FILE" ]; then
+  COUNT=$(jq -r '.conventions | length' "$CONFIG_FILE" 2>/dev/null || echo "0")
+  for ((i = 0; i < COUNT; i++)); do
+    title=$(jq -r ".conventions[$i].title // .conventions[$i].id" "$CONFIG_FILE" 2>/dev/null)
+    filepath=$(jq -r ".conventions[$i].path" "$CONFIG_FILE" 2>/dev/null)
+    # Resolve path relative to project root
+    fullpath="$PROJECT_ROOT/$filepath"
+    if [ -n "$filepath" ] && [ -f "$fullpath" ]; then
+      content=$(cat "$fullpath" 2>/dev/null || true)
+      if [ -n "$content" ]; then
+        CONVENTIONS="${CONVENTIONS}"$'\n\n'"[${title}]"$'\n'"${content}"
+      fi
+    fi
+  done
+fi
+
+# Assemble context with real newlines
+CONTEXT=""
+if [ -n "$CONVENTIONS" ]; then
+  CONTEXT="Project Conventions:${CONVENTIONS}"
+  [ -n "$COMMIT_FMT" ] && CONTEXT="${CONTEXT}"$'\n\n'"Commit format: ${COMMIT_FMT}"
+  [ -n "$FEATURES" ] && CONTEXT="${CONTEXT}"$'\n'"Enabled features: ${FEATURES}"
+  CONTEXT="${CONTEXT}"$'\n\n'"Context >=80%: invoke /auto-handover immediately"
+else
+  CONTEXT="Context >=80%: invoke /auto-handover immediately"
+fi
+
+# Emit JSON via jq — handles all escaping correctly
+jq -n --arg ctx "$CONTEXT" '{hookSpecificOutput:{hookEventName:"SessionStart",additionalContext:$ctx}}'

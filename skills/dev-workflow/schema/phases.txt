@@ -1,0 +1,41 @@
+# Workflow Phase Schema - SINGLE SOURCE OF TRUTH
+# This file defines all phases and statuses for the feature-dev workflow.
+# Both the skill templates and stop hook read from this file.
+#
+# MAIN PHASES
+# Format: PHASE_NUM|NAME|EMOJI_PROGRESS|EMOJI_COMPLETE|DESCRIPTION
+# - PHASE_NUM: 0-8
+# - NAME: Display name for the phase
+# - EMOJI_PROGRESS: Emoji shown when phase is in progress
+# - EMOJI_COMPLETE: Emoji shown when phase is complete
+# - DESCRIPTION: Brief description of the phase
+
+0|Worktree + Context Setup + Explore|📋|✅|Create worktree, feature directory, context.md, OpenSpec init, /openspec-explore, and /brainstorm (optional)
+1|Planning|📋|✅|Create OpenSpec artifacts (proposal, specs, design, tasks)
+2|Convention & Readiness Review|📖|✅|Load relevant ADRs + tech-stack gotchas, re-read OpenSpec artifacts, cross-check for violations
+3|Implementation|⚙️|✅|TDD cycle - Red/Green/Refactor
+4|Code Review|🔍|✅|Review code against checklist
+5|Refactoring|🔧|✅|Apply review feedback and improvements
+6|Summarization|📝|✅|Document implementation summary
+7|Retrospective|🔄|✅|Document learnings and insights
+8|Approval & Commit|✅|🎉|Final approval and git commit
+
+# SUB-PHASES (Phase 1: Planning via OpenSpec)
+# Format: SUB:PARENT.NUM|NAME|EMOJI_PROGRESS|EMOJI_COMPLETE|OUTPUT_FILE|DESCRIPTION
+# - OUTPUT_FILE: Relative to OpenSpec change directory (openspec/changes/<name>/)
+
+SUB:1.1|Proposal|📝|✅|proposal.md|Define why, what changes, capabilities, and impact
+SUB:1.2|Specifications|📝|✅|specs/*/spec.md|Create delta specs per capability (WHEN/THEN)
+SUB:1.3|Design|📝|✅|design.md|Document technical decisions and architecture
+SUB:1.4|Tasks|📝|✅|tasks.md|Break down implementation into checkboxed tasks
+
+# Valid Status Values
+# Format: STATUS:KEY|DISPLAY_NAME|MARKER_VALUE
+# - KEY: Internal identifier
+# - DISPLAY_NAME: Human-readable name
+# - MARKER_VALUE: Value used in HTML comment markers
+
+STATUS:in_progress|In Progress|in_progress
+STATUS:complete|Complete|complete
+STATUS:blocked|Blocked|blocked
+STATUS:paused|Paused|paused

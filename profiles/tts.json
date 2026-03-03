@@ -1,0 +1,25 @@
+{
+  "_comment": "EXAMPLE ONLY — .NET/Vue project profile. Replace all paths and commands with your project's equivalents.",
+  "schemaVersion": 1,
+  "profile": "tts",
+  "conventions": [
+    { "id": "backend", "path": ".ai/tech-stack/backend", "title": "Backend" },
+    { "id": "frontend", "path": ".ai/tech-stack/frontend", "title": "Frontend" },
+    { "id": "database", "path": ".ai/tech-stack/database", "title": "Database" },
+    { "id": "e2e", "path": ".ai/tech-stack/e2e", "title": "E2E Testing" }
+  ],
+  "commitFormat": "[STRUCTURAL|BEHAVIORAL]: description",
+  "verification": [
+    { "name": "build", "cmd": "dotnet build TTS.Api", "label": "Backend build" },
+    { "name": "unit-test", "cmd": "dotnet test TTS.Api.Tests", "label": "Unit tests" },
+    { "name": "typecheck", "cmd": "cd TTS.Web && npm run typecheck", "label": "TypeScript check" },
+    { "name": "vitest", "cmd": "cd TTS.Web && npx vitest run", "label": "Vitest" },
+    { "name": "e2e", "cmd": "cd TTS.E2E && npm run test:api", "label": "E2E API" }
+  ],
+  "testHint": "dotnet test TTS.Api.Tests | npx vitest run | npm run typecheck",
+  "lessonFilePath": ".ai/learnings-raw.md",
+  "features": {
+    "openspec": true,
+    "mssql": true
+  }
+}

@@ -1,0 +1,8 @@
+{
+  "name": "smart-dev",
+  "version": "1.0.0",
+  "description": "Configurable Claude Code plugin for professional development workflows. Bundles skills, agents, hooks, and automation into a single installable plugin.",
+  "author": {
+    "name": "coolwuu"
+  }
+}

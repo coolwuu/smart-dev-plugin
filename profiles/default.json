@@ -1,0 +1,13 @@
+{
+  "schemaVersion": 1,
+  "profile": "default",
+  "conventions": [],
+  "commitFormat": "",
+  "verification": [],
+  "testHint": "",
+  "lessonFilePath": "learnings.md",
+  "features": {
+    "openspec": false,
+    "mssql": false
+  }
+}
