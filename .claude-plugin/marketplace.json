@@ -1,0 +1,23 @@
+{
+  "name": "coolwuu-smart-dev-plugin",
+  "owner": {
+    "name": "coolwuu"
+  },
+  "metadata": {
+    "description": "Configurable Claude Code plugin for professional development workflows"
+  },
+  "plugins": [
+    {
+      "name": "smart-dev",
+      "source": ".",
+      "description": "42 skills, 59 agents, 11 hooks, 3 commands — config-driven dev workflows.",
+      "version": "1.0.0",
+      "author": {
+        "name": "coolwuu"
+      },
+      "homepage": "https://github.com/coolwuu/smart-dev-plugin",
+      "repository": "https://github.com/coolwuu/smart-dev-plugin",
+      "tags": ["claude-code", "plugin", "workflow", "agents", "hooks"]
+    }
+  ]
+}

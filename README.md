@@ -29,17 +29,14 @@
 ## Quick Start
 
 ```bash
-# Clone the repo (or use as a submodule)
-git clone https://github.com/coolwuu/smart-dev-plugin.git
+# 1. Add the marketplace
+/plugin marketplace add coolwuu/smart-dev-plugin
 
-# Install the plugin
-claude plugin install ./smart-dev-plugin/
+# 2. Install the plugin
+/plugin install smart-dev@coolwuu-smart-dev-plugin
 
-# (Optional) Add project config
-cp smart-dev-plugin/profiles/tts.json .claude/smart-dev.json
-
-# Verify
-claude plugin list   # → smart-dev
+# 3. Verify
+/plugin   # → Installed tab shows smart-dev
 ```
 
 That's it. Skills, agents, and hooks are available immediately.
@@ -107,13 +104,9 @@ python3 --version  # project-insights — brew install python3
 ### Install the plugin
 
 ```bash
-# Option 1: Clone directly
-git clone https://github.com/coolwuu/smart-dev-plugin.git
-claude plugin install ./smart-dev-plugin/
-
-# Option 2: Symlink for convenience
-git clone https://github.com/coolwuu/smart-dev-plugin.git ~/projects/smart-dev
-claude plugin install ~/projects/smart-dev/
+# From within Claude Code:
+/plugin marketplace add coolwuu/smart-dev-plugin
+/plugin install smart-dev@coolwuu-smart-dev-plugin
 ```
 
 ### Remove duplicate hooks
