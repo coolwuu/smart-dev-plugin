@@ -43,6 +43,79 @@ That's it. Skills, agents, and hooks are available immediately.
 
 ---
 
+## Getting Started
+
+### Start a feature (9-phase workflow)
+
+The core workflow is `dev-workflow` — a structured 9-phase process from idea to merged code. Trigger it naturally:
+
+```
+"Start feature: add user authentication"
+"I want to build a dark mode toggle"
+"Let's implement the search API"
+```
+
+The workflow activates automatically when you mention building or implementing something. It walks you through:
+
+| Phase | What happens | You do |
+|-------|-------------|--------|
+| **0** | Creates a git worktree + context file, runs explore | Describe the feature |
+| **1** | Planning — generates proposal, specs, design, tasks | Approve each artifact |
+| **2** | Reviews project conventions, checks readiness | Confirm |
+| **3** | Implementation — TDD, subagent delegation, parallel execution | Write code / approve |
+| **4** | Code review — dispatches reviewer agents in waves | Resolve findings |
+| **5** | Refactoring pass — structural improvements | Approve changes |
+| **6** | Summarization *(optional)* | Opt in |
+| **7** | Retrospective *(optional)* | Opt in |
+| **8** | Final verification, approval gate, commit/merge | Approve commit |
+
+State is tracked in `context.md` — if a session ends mid-feature, just say **"resume feature"** and the workflow picks up where you left off.
+
+#### Configure the workflow
+
+Add to your project's `CLAUDE.md` to customize:
+
+```markdown
+## Feature Development Workflow
+
+**Phases:** 0,1,2,3,4,8
+**TDD:** required
+**FeatureDocsPath:** docs/features
+```
+
+| Option | Values | Default |
+|--------|--------|---------|
+| **Phases** | 0-8 (comma-separated) | 0,1,2,3,8 |
+| **TDD** | `required` / `optional` / `none` | `optional` |
+| **FeatureDocsPath** | Path from repo root | `Documentation/Requirements/Feature` |
+
+### Use individual skills
+
+You don't have to use the full workflow. Every skill is independently invocable:
+
+```bash
+/smart-dev:auto-handover          # Save session state before context runs out
+/smart-dev:resume-handover        # Resume from where you left off
+/smart-dev:verify                 # Run your project's test/build/lint suite
+/smart-dev:lesson                 # Capture a learning from this session
+/smart-dev:dev-status             # Quick git status overview
+/smart-dev:codex                  # Delegate a task to OpenAI Codex CLI
+/smart-dev:e2e-troubleshoot       # 6-layer diagnostic ladder for E2E failures
+/smart-dev:parallel-execution     # Run multiple tasks via parallel subagents
+/smart-dev:visual-ui-critique     # Critique a UI screenshot
+```
+
+### Safety hooks — always active
+
+Even without configuration, these hooks fire automatically after installation:
+
+- **Dangerous command blocker** — intercepts `rm -rf`, `git push --force`, `DROP TABLE`
+- **Agent model guard** — blocks Agent calls that forget the `model` parameter
+- **Context gate** — warns at 75% context usage, blocks at 85%
+- **Test reminder** — nudges you to run tests after file edits
+
+---
+
 ## What's Inside
 
 ```
